@@ -96,6 +96,98 @@ const helloWorld = (req, res) => {
 
 module.exports = { helloWorld }
 EOF
+
+cd ..
+
+# Create a Dockerfile in the main directory
+cat > Dockerfile <<EOF
+# Use the official Node.js runtime as a parent image
+FROM node:14
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy all project files to the working directory
+COPY . .
+
+# Expose port 3000
+EXPOSE 3000
+
+# Define the command to run your application
+CMD [ "node", "Server/index.js" ]
+EOF
+
+#Back to root
+cd ..
+
+npm init vite@latest
+
+
+
+# Get the name of the most recently created folder in the root folder
+recentFolderName=$(ls -td */ | head -n 1 | sed 's:/$::')
+
+cd $recentFolderName
+
+npm install
+
+# Create a Dockerfile in the main directory
+cat > Dockerfile <<EOF
+# Use an official Node.js runtime as a parent image
+FROM node:14
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy all project files to the working directory
+COPY . .
+
+# Expose port 3000 for Vite development server
+EXPOSE 5173
+
+# Run the Vite development server
+CMD ["npm", "run", "dev"]
+EOF
+
+cd ..
+
+
+# Create a docker-compose file in the main directory
+cat > docker-compose.yml <<EOF
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./$recentFolderName # Path to the directory containing your frontend Dockerfile
+    ports:
+      - "5173:5173"      # Map the frontend container's port 3000 to the host
+    depends_on:
+      - backend           # Ensure the backend service is started before the frontend
+
+  backend:
+    build:
+      context: ./$folderName # Path to the directory containing your backend Dockerfile
+    ports:
+      - "3001:3000"      # Map the backend container's port 3000 to the host
+
+networks:
+  default:
+    driver: bridge
+EOF
+
+echo "Most recently created folder in the root folder: $recentFolderName"
 echo "Project setup in the '$folderName' directory."
 
 # End of your script
