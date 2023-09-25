@@ -154,7 +154,7 @@ RUN npm install
 # Copy all project files to the working directory
 COPY . .
 
-# Expose port 3000 for Vite development server
+# Expose port 5173 for Vite development server
 EXPOSE 5173
 
 # Run the Vite development server
@@ -180,7 +180,7 @@ services:
     build:
       context: ./$folderName # Path to the directory containing your backend Dockerfile
     ports:
-      - "3001:3000"      # Map the backend container's port 3000 to the host
+      - "3001:3001"      # Map the backend container's port 3000 to the host
 
 networks:
   default:
