@@ -34,7 +34,7 @@ const express = require("express")
 
 const app = express()
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3001
 
 const router = require("../Router/routes")
 
@@ -116,8 +116,8 @@ RUN npm install
 # Copy all project files to the working directory
 COPY . .
 
-# Expose port 3000
-EXPOSE 3000
+# Expose port 3001
+EXPOSE 3001
 
 # Define the command to run your application
 CMD [ "node", "Server/index.js" ]
