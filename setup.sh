@@ -34,7 +34,7 @@ const express = require("express")
 
 const app = express()
 
-const port = process.env.PORT || 3001
+const port =  3000
 
 const router = require("../Router/routes")
 
@@ -116,8 +116,8 @@ RUN npm install
 # Copy all project files to the working directory
 COPY . .
 
-# Expose port 3001
-EXPOSE 3001
+# Expose port 3000
+EXPOSE 3000
 
 # Define the command to run your application
 CMD [ "node", "Server/index.js" ]
@@ -180,7 +180,7 @@ services:
     build:
       context: ./$folderName # Path to the directory containing your backend Dockerfile
     ports:
-      - "3001:3001"      # Map the backend container's port 3000 to the host
+      - "3001:3000"      # Map the backend container's port 3000 to the host
 
 networks:
   default:
